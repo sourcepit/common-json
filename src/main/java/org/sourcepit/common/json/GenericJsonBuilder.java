@@ -19,7 +19,9 @@ package org.sourcepit.common.json;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class GenericJsonBuilder<JsonObject, JsonArray> implements JsonBuilder<JsonObject, JsonArray> {
+public class GenericJsonBuilder<JsonObject, JsonArray extends Iterable<?>>
+   implements
+      JsonBuilder<JsonObject, JsonArray> {
    private abstract class AbstractBuilder<ParentBuilder> {
       // CSOFF
       final ParentBuilder parentBuilder; // CSON
@@ -41,13 +43,13 @@ public class GenericJsonBuilder<JsonObject, JsonArray> implements JsonBuilder<Js
       }
 
       @Override
-      public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> addObject(JsonObject value) {
+      public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> add(JsonObject value) {
          delegate.addObject(array, value);
          return this;
       }
 
       @Override
-      public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> addArray(JsonArray value) {
+      public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> add(JsonArray value) {
          delegate.addArray(array, value);
          return this;
       }
@@ -188,29 +190,29 @@ public class GenericJsonBuilder<JsonObject, JsonArray> implements JsonBuilder<Js
       }
 
       @Override
-      public JsonObjectBuilder<JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> addOpenObject() {
+      public JsonObjectBuilder<JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> addObject() {
          return new JsonObjectBuilderImpl<JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray>>(this) {
             @Override
-            public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> closeObject() {
+            public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> endObject() {
                delegate.addObject(array, object);
-               return super.closeObject();
+               return super.endObject();
             }
          };
       }
 
       @Override
-      public JsonArrayBuilder<JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> addOpenArray() {
+      public JsonArrayBuilder<JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> addArray() {
          return new JsonArrayBuilderImpl<JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray>>(this) {
             @Override
-            public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> closeArray() {
+            public JsonArrayBuilder<ParentBuilder, JsonObject, JsonArray> endArray() {
                delegate.addArray(JsonArrayBuilderImpl.this.array, array);
-               return super.closeArray();
+               return super.endArray();
             }
          };
       }
 
       @Override
-      public ParentBuilder closeArray() {
+      public ParentBuilder endArray() {
          return parentBuilder;
       }
    }
@@ -227,12 +229,120 @@ public class GenericJsonBuilder<JsonObject, JsonArray> implements JsonBuilder<Js
       }
 
       @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, String value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
       public JsonPropertyBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name) {
          return new JsonPropertyBuilderImpl<ParentBuilder>(this, name);
       }
 
       @Override
-      public ParentBuilder closeObject() {
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, JsonObject value) {
+         delegate.setObject(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, JsonArray value) {
+         delegate.setArray(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setFieldToNull(String name) {
+         delegate.setNull(object, name);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, BigDecimal value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, BigInteger value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, Double value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, double value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, Float value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, float value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, Long value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, long value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, Integer value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, int value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, Short value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, short value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, Boolean value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> setField(String name, boolean value) {
+         delegate.set(object, name, value);
+         return this;
+      }
+
+      @Override
+      public ParentBuilder endObject() {
          return parentBuilder;
       }
    }
@@ -383,37 +493,37 @@ public class GenericJsonBuilder<JsonObject, JsonArray> implements JsonBuilder<Js
       }
 
       @Override
-      public JsonArrayBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toOpenArray() {
+      public JsonArrayBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toArray() {
          return new JsonArrayBuilderImpl<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>>(parentBuilder) {
             @Override
-            public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> closeArray() {
+            public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> endArray() {
                final JsonObject owner = JsonPropertyBuilderImpl.this.parentBuilder.object;
                delegate.setArray(owner, name, array);
-               return super.closeArray();
+               return super.endArray();
             }
          };
       }
 
       @Override
-      public JsonObjectBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toOpenObject() {
+      public JsonObjectBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toObject() {
          return new JsonObjectBuilderImpl<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>>(parentBuilder) {
             @Override
-            public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> closeObject() {
+            public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> endObject() {
                final JsonObject owner = JsonPropertyBuilderImpl.this.parentBuilder.object;
                delegate.setObject(owner, name, object);
-               return super.closeObject();
+               return super.endObject();
             }
          };
       }
 
       @Override
-      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> toObject(JsonObject value) {
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> to(JsonObject value) {
          delegate.setObject(parentBuilder.object, name, value);
          return parentBuilder;
       }
 
       @Override
-      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> toArray(JsonArray value) {
+      public JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> to(JsonArray value) {
          delegate.setArray(parentBuilder.object, name, value);
          return parentBuilder;
       }
@@ -426,20 +536,20 @@ public class GenericJsonBuilder<JsonObject, JsonArray> implements JsonBuilder<Js
    }
 
    @Override
-   public JsonObjectBuilder<JsonObject, JsonObject, JsonArray> openObject() {
+   public JsonObjectBuilder<JsonObject, JsonObject, JsonArray> beginObject() {
       return new JsonObjectBuilderImpl<JsonObject>(null) {
          @Override
-         public JsonObject closeObject() {
+         public JsonObject endObject() {
             return object;
          }
       };
    }
 
    @Override
-   public JsonArrayBuilder<JsonArray, JsonObject, JsonArray> openArray() {
+   public JsonArrayBuilder<JsonArray, JsonObject, JsonArray> beginArray() {
       return new JsonArrayBuilderImpl<JsonArray>(null) {
          @Override
-         public JsonArray closeArray() {
+         public JsonArray endArray() {
             return array;
          }
       };

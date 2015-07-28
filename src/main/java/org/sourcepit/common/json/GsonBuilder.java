@@ -23,4 +23,6 @@ public class GsonBuilder extends GenericJsonBuilder<JsonObject, JsonArray> {
    public GsonBuilder() {
       super(new GsonBuilderDelegate());
    }
+   
+   public static final GsonBuilder GSON = new GsonBuilder();
 }

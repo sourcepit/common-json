@@ -20,14 +20,14 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 
-public interface JsonPropertyBuilder<ParentBuilder, JsonObject, JsonArray> {
-   JsonObjectBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toOpenObject();
+public interface JsonPropertyBuilder<ParentBuilder, JsonObject, JsonArray extends Iterable<?>> {
+   JsonObjectBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toObject();
 
-   JsonArrayBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toOpenArray();
+   JsonArrayBuilder<JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray>, JsonObject, JsonArray> toArray();
 
-   JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> toObject(JsonObject value);
+   JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> to(JsonObject value);
 
-   JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> toArray(JsonArray value);
+   JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> to(JsonArray value);
 
    JsonObjectBuilder<ParentBuilder, JsonObject, JsonArray> toNull();
 

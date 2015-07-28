@@ -15,8 +15,8 @@
  */
 
 package org.sourcepit.common.json;
-public interface JsonBuilder<JsonObject, JsonArray> {
-   JsonObjectBuilder<JsonObject, JsonObject, JsonArray> openObject();
+public interface JsonBuilder<JsonObject, JsonArray extends Iterable<?>> {
+   JsonObjectBuilder<JsonObject, JsonObject, JsonArray> beginObject();
 
-   JsonArrayBuilder<JsonArray, JsonObject, JsonArray> openArray();
+   JsonArrayBuilder<JsonArray, JsonObject, JsonArray> beginArray();
 }
